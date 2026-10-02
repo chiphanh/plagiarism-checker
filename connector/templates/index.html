@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Site</title>
+</head>
+<body>
+  <button id="sendRequest">Send POST Request</button>
+  <button id="makeUser">Create user in DB</button>
+  <button id="getUsers">See all users in DB</button>
+  <input type="checkbox" id="responseCheckbox" disabled>
+  
+  <div id="responseMessage"></div>
+  
+  <script>
+    document.getElementById('sendRequest').addEventListener('click', function() {
+      const postData = {
+        engine: "SearchEngineX",
+        assignment: "ProjectX",
+        parameters: {
+          parameter1: "value1",
+          parameter2: "value2"
+        }
+      };
+      
+      fetch('/listener/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+      })
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('responseMessage').innerText = `Response from listener: ${data}`;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+    
+    document.getElementById('makeUser').addEventListener('click', function() {
+      fetch('/listener/user', {
+        method: 'POST'
+      })
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('responseMessage').innerText = `Response from listener: ${data}`;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+    
+    document.getElementById('getUsers').addEventListener('click', function() {
+      fetch('/listener/users', {
+        method: 'GET'
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('responseMessage').innerText = `Response from listener: ${JSON.stringify(data)}`;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>
+
+
